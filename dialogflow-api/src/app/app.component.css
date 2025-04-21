@@ -1,46 +1,118 @@
+/* Overall styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .app-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  color: #333;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
-.app-header {
+/* Site header */
+.site-header {
+  background-color: #0084ff;
+  color: white;
+  padding: 2rem;
   text-align: center;
-  margin-bottom: 30px;
 }
 
-.app-header h1 {
-  color: #0084ff;
-  margin-bottom: 10px;
+.site-header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
 }
 
-.app-header p {
-  color: #666;
-  font-size: 1.1rem;
-  margin: 0;
+.site-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
 }
 
+/* Main content */
 main {
   flex: 1;
-  display: flex;
-  justify-content: center;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.app-footer {
+.content-section {
+  margin-bottom: 3rem;
+  background-color: #f8f9fa;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.content-section h2 {
+  margin-bottom: 1rem;
+  color: #0084ff;
+}
+
+.content-section p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Features section */
+.features-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.feature {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature h3 {
+  color: #0084ff;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.feature p {
+  line-height: 1.5;
+}
+
+/* Footer */
+.site-footer {
+  background-color: #f2f2f2;
+  padding: 1.5rem;
   text-align: center;
-  margin-top: 30px;
-  padding: 15px 0;
-  color: #888;
+  color: #666;
   font-size: 0.9rem;
-  border-top: 1px solid #eaeaea;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .app-container {
-    padding: 10px;
+  .site-header {
+    padding: 1.5rem;
+  }
+  
+  .site-header h1 {
+    font-size: 2rem;
+  }
+  
+  main {
+    padding: 1.5rem;
+  }
+  
+  .features-section {
+    grid-template-columns: 1fr;
   }
 }

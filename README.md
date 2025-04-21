@@ -1,11 +1,13 @@
-# Angular-Flask-Dialogflow API Chatbot
+# Angular-Flask-Dialogflow CX Chatbot Widget
 
-This project is a full-stack application that integrates an Angular frontend with a Flask backend to create a chatbot powered by Google's Dialogflow API.
+This project is a full-stack application that integrates an Angular frontend with a Flask backend to create a chatbot widget powered by Google's Dialogflow CX API.
 
 ## Features
 
-- Interactive chatbot UI built with Angular
-- Flask backend serving as a proxy to Dialogflow API
+- Interactive popup chatbot widget positioned in the bottom-right corner
+- Voice input support using the Web Speech API
+- File attachment capabilities
+- Flask backend serving as a proxy to Dialogflow CX API
 - Real-time chat interface with typing indicators
 - Support for rich responses from Dialogflow (buttons, cards, etc.)
 - Responsive design that works on mobile and desktop
@@ -13,7 +15,7 @@ This project is a full-stack application that integrates an Angular frontend wit
 ## Project Structure
 
 - `/dialogflow-api` - Angular frontend application
-- `/flask-backend` - Flask backend for Dialogflow integration
+- `/flask-backend` - Flask backend for Dialogflow CX integration
 
 ## Setup Instructions
 
@@ -21,8 +23,8 @@ This project is a full-stack application that integrates an Angular frontend wit
 
 - Node.js and npm
 - Python 3.6 or higher
-- Google Cloud account with Dialogflow API enabled
-- Dialogflow agent configured
+- Google Cloud account with Dialogflow CX API enabled
+- Dialogflow CX agent configured in Dialogflow CX Console
 
 ### Backend Setup
 
@@ -42,9 +44,12 @@ This project is a full-stack application that integrates an Angular frontend wit
    pip install -r requirements.txt
    ```
 
-4. Configure your Dialogflow credentials:
+4. Configure your Dialogflow CX credentials:
    - Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to your service account key file
-   - Update the `PROJECT_ID` in `app.py` with your Dialogflow project ID
+   - Update the following variables in `app.py`:
+     - `PROJECT_ID`: Your Google Cloud project ID
+     - `LOCATION`: Region where your agent is deployed (e.g., "global", "us-central1")
+     - `AGENT_ID`: Your Dialogflow CX agent ID
 
 5. Start the Flask server:
    ```
@@ -73,17 +78,19 @@ This project is a full-stack application that integrates an Angular frontend wit
 ## Usage
 
 1. Open the application in your browser
-2. Type a message in the chat input and press Enter or click Send
-3. The chatbot will respond based on your Dialogflow agent's configuration
+2. Click the chat bubble in the bottom-right corner to open the chatbot
+3. Type a message or use voice input by clicking the microphone icon
+4. Upload files using the attachment (paperclip) icon
+5. The chatbot will respond based on your Dialogflow CX agent's configuration
 
 ## Customization
 
-### Dialogflow Agent
+### Dialogflow CX Agent
 
-- Create intents in Dialogflow to handle different user queries
-- Set up entities to extract specific information from user messages
-- Use contexts for managing conversation flow
-- Configure fulfillment to perform custom actions
+- Create flows, pages, and routes in the Dialogflow CX Console
+- Set up intents to handle different user queries
+- Create entity types to extract specific information
+- Configure fulfillment for complex responses
 
 ### Frontend Customization
 
@@ -95,7 +102,7 @@ This project is a full-stack application that integrates an Angular frontend wit
 
 - Add error handling and logging
 - Implement session management for multiple users
-- Add support for other Dialogflow features like audio input
+- Add support for other Dialogflow CX features
 
 ## Deployment
 
