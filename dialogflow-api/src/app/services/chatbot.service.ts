@@ -8,7 +8,7 @@ import { DialogflowResponse } from '../models/dialogflow-response.model';
 })
 export class ChatbotService {
   // URL of our Flask backend
-  private apiUrl = 'http://localhost:5000/api/dialogflow';
+  private apiUrl = 'https://upgraded-spoon-6xxpr69x9vvh4v56-5000.app.github.dev/api/dialogflow';
 
   constructor(private http: HttpClient) {}
 

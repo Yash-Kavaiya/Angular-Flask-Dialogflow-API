@@ -1,6 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, PLATFORM_ID, Inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChatbotService } from '../services/chatbot.service';
 import { Message } from '../models/message.model';
 
@@ -21,13 +21,21 @@ export class ChatbotComponent implements OnInit {
   @ViewChild('messagesContainer') messagesContainer!: ElementRef;
 
   private recognition: any;
+  private isBrowser: boolean;
 
-  constructor(private chatbotService: ChatbotService) {}
+  constructor(
+    private chatbotService: ChatbotService,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
-    // Initialize Web Speech API
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      this.initSpeechRecognition();
+    // Only initialize Web Speech API in browser environment
+    if (this.isBrowser) {
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        this.initSpeechRecognition();
+      }
     }
   }
 
@@ -70,6 +78,8 @@ export class ChatbotComponent implements OnInit {
   }
 
   toggleVoiceInput(): void {
+    if (!this.isBrowser) return;
+
     if (!this.recognition) {
       alert('Speech recognition is not supported by your browser.');
       return;
@@ -84,21 +94,20 @@ export class ChatbotComponent implements OnInit {
   }
 
   openFileInput(): void {
-    this.fileInput.nativeElement.click();
+    if (this.isBrowser) {
+      this.fileInput.nativeElement.click();
+    }
   }
 
   handleFileInput(event: Event): void {
+    if (!this.isBrowser) return;
+
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    // Here you'd normally process the file and send it to the backend
-    // For now, we'll just add a message with the file name
-    
     const fileMessage = `I'm sending the file: ${file.name}`;
     this.messageInput.setValue(fileMessage);
-    
-    // Reset the file input
     input.value = '';
   }
 
@@ -144,7 +153,7 @@ export class ChatbotComponent implements OnInit {
   }
 
   scrollToBottom(): void {
-    if (this.messagesContainer) {
+    if (this.isBrowser && this.messagesContainer) {
       const element = this.messagesContainer.nativeElement;
       element.scrollTop = element.scrollHeight;
     }
