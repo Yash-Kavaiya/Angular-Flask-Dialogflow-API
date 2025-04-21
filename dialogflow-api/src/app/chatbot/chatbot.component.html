@@ -1,9 +1,16 @@
-<div class="chatbot-container">
+<!-- Chat toggle button -->
+<button class="chat-toggle-button" (click)="toggleChat()">
+  <i class="chat-icon" *ngIf="!isChatOpen">💬</i>
+  <i class="close-icon" *ngIf="isChatOpen">×</i>
+</button>
+
+<!-- Chat widget container -->
+<div class="chatbot-container" [ngClass]="{'open': isChatOpen}">
   <div class="chatbot-header">
-    <h2>Chatbot Assistant</h2>
+    <h2>How can I help you?</h2>
   </div>
   
-  <div class="chatbot-messages">
+  <div #messagesContainer class="chatbot-messages">
     <div *ngFor="let message of messages" 
          [ngClass]="{'message-container': true, 'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
       <div class="message-bubble">
@@ -12,7 +19,7 @@
         <!-- If there's rich content from Dialogflow, render it -->
         <div *ngIf="message.richResponse" class="rich-response">
           <!-- Handle different types of rich responses here -->
-          <div *ngIf="message.richResponse.buttons">
+          <div *ngIf="message.richResponse.buttons" class="suggestion-buttons">
             <button *ngFor="let button of message.richResponse.buttons" 
                     class="suggestion-button" 
                     (click)="messageInput.setValue(button.text); sendMessage()">
@@ -23,7 +30,7 @@
           <!-- Add other rich response types as needed -->
         </div>
         
-        <div class="message-timestamp">{{ message.timestamp | date:'short' }}</div>
+        <div class="message-timestamp">{{ message.timestamp | date:'shortTime' }}</div>
       </div>
     </div>
   </div>
@@ -36,13 +43,33 @@
   </div>
   
   <div class="chatbot-input">
+    <!-- Hidden file input -->
+    <input type="file" #fileInput style="display: none" (change)="handleFileInput($event)">
+    
+    <!-- Attachment button -->
+    <button class="icon-button attachment-button" (click)="openFileInput()">
+      <i class="attachment-icon">📎</i>
+    </button>
+    
+    <!-- Voice button -->
+    <button class="icon-button voice-button" 
+            [ngClass]="{'recording': isRecording}"
+            (click)="toggleVoiceInput()">
+      <i class="mic-icon">🎤</i>
+    </button>
+    
+    <!-- Text input -->
     <input type="text" 
+           class="message-input"
            [formControl]="messageInput" 
            placeholder="Type your message here..." 
            (keyup.enter)="sendMessage()">
-    <button (click)="sendMessage()" [disabled]="loading">
-      <span *ngIf="!loading">Send</span>
-      <span *ngIf="loading">Sending...</span>
+    
+    <!-- Send button -->
+    <button class="icon-button send-button" 
+            (click)="sendMessage()" 
+            [disabled]="loading || !messageInput.value?.trim()">
+      <i class="send-icon">➤</i>
     </button>
   </div>
 </div>
