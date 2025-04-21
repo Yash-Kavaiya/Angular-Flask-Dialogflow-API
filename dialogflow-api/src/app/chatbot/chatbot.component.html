@@ -1,0 +1,48 @@
+<div class="chatbot-container">
+  <div class="chatbot-header">
+    <h2>Chatbot Assistant</h2>
+  </div>
+  
+  <div class="chatbot-messages">
+    <div *ngFor="let message of messages" 
+         [ngClass]="{'message-container': true, 'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
+      <div class="message-bubble">
+        <div class="message-content">{{ message.content }}</div>
+        
+        <!-- If there's rich content from Dialogflow, render it -->
+        <div *ngIf="message.richResponse" class="rich-response">
+          <!-- Handle different types of rich responses here -->
+          <div *ngIf="message.richResponse.buttons">
+            <button *ngFor="let button of message.richResponse.buttons" 
+                    class="suggestion-button" 
+                    (click)="messageInput.setValue(button.text); sendMessage()">
+              {{ button.text }}
+            </button>
+          </div>
+          
+          <!-- Add other rich response types as needed -->
+        </div>
+        
+        <div class="message-timestamp">{{ message.timestamp | date:'short' }}</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Show typing indicator when loading -->
+  <div *ngIf="loading" class="typing-indicator">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  
+  <div class="chatbot-input">
+    <input type="text" 
+           [formControl]="messageInput" 
+           placeholder="Type your message here..." 
+           (keyup.enter)="sendMessage()">
+    <button (click)="sendMessage()" [disabled]="loading">
+      <span *ngIf="!loading">Send</span>
+      <span *ngIf="loading">Sending...</span>
+    </button>
+  </div>
+</div>
