@@ -1,0 +1,65 @@
+<div class="chat-widget-container">
+  <!-- Chat Button -->
+  <div class="chat-button" [class.active]="isWidgetOpen" (click)="toggleWidget()">
+    <i class="fas" [ngClass]="isWidgetOpen ? 'fa-times' : 'fa-comment'"></i>
+  </div>
+  
+  <!-- Chat Window -->
+  <div class="chat-window" [class.open]="isWidgetOpen">
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="chat-title">Chat Assistant</div>
+      <div class="chat-close" (click)="toggleWidget()">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
+    
+    <!-- Messages -->
+    <div #chatContainer class="chat-messages">
+      <ng-container *ngFor="let message of messages">
+        <app-message-item [message]="message"></app-message-item>
+      </ng-container>
+    </div>
+    
+    <!-- Input Area -->
+    <div class="chat-input-area">
+      <!-- Current Attachment Preview -->
+      <div class="attachment-preview" *ngIf="currentAttachment">
+        <div class="attachment-name">
+          <i class="fas" [ngClass]="currentAttachment.type.startsWith('image/') ? 'fa-image' : 'fa-file'"></i>
+          {{ currentAttachment.name }}
+        </div>
+        <button class="attachment-remove" (click)="removeAttachment()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <!-- Input Form -->
+      <div class="input-form">
+        <input
+          type="text"
+          placeholder="Type a message..."
+          [(ngModel)]="userInput"
+          (keyup.enter)="sendMessage()"
+          [disabled]="isSending"
+        />
+        
+        <!-- Voice Input Button -->
+        <button class="voice-btn" (click)="toggleVoiceRecording()" [class.recording]="isRecording">
+          <i class="fas" [ngClass]="isRecording ? 'fa-stop' : 'fa-microphone'"></i>
+        </button>
+        
+        <!-- File Attachment Button -->
+        <label class="attachment-btn" [class.disabled]="isSending">
+          <i class="fas fa-paperclip"></i>
+          <input type="file" (change)="handleFileInput($event)" hidden>
+        </label>
+        
+        <!-- Send Button -->
+        <button class="send-btn" (click)="sendMessage()" [disabled]="isSending">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
