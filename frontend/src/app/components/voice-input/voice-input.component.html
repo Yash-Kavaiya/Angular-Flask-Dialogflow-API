@@ -1,0 +1,14 @@
+<div class="voice-input-container">
+  <div class="recording-status" *ngIf="isRecording">
+    <div class="recording-indicator">
+      <div class="pulse"></div>
+      <i class="fas fa-microphone"></i>
+    </div>
+    <div class="recording-timer">{{ formatTime(recordingTime) }}</div>
+  </div>
+  
+  <button class="recording-button" (click)="toggleRecording()" [class.active]="isRecording">
+    <i class="fas" [ngClass]="isRecording ? 'fa-stop' : 'fa-microphone'"></i>
+    <span>{{ isRecording ? 'Stop' : 'Start' }} Recording</span>
+  </button>
+</div>
