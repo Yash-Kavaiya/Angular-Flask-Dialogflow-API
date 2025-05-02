@@ -1,0 +1,40 @@
+<div class="message-item" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+  <div class="message-content">
+    <!-- Processing indicator (typing animation) -->
+    <div *ngIf="message.isProcessing" class="typing-indicator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    
+    <!-- Regular message content -->
+    <ng-container *ngIf="!message.isProcessing">
+      <div class="message-text">{{ message.content }}</div>
+      
+      <!-- Attachment, if present -->
+      <div *ngIf="message.attachment" class="message-attachment">
+        <!-- Image attachment -->
+        <img *ngIf="message.attachment.type.startsWith('image/') && message.attachment.url" 
+             [src]="message.attachment.url" alt="Attached image" class="attachment-image">
+        
+        <!-- Non-image attachment -->
+        <a *ngIf="!message.attachment.type.startsWith('image/') && message.attachment.url" 
+           [href]="message.attachment.url" target="_blank" class="attachment-file">
+          <i class="fas" [ngClass]="getFileIconClass(message.attachment.type)"></i>
+          <span>{{ message.attachment.name }}</span>
+        </a>
+        
+        <!-- Attachment without URL (still uploading) -->
+        <div *ngIf="!message.attachment.url" class="attachment-loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          <span>{{ message.attachment.name }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  
+  <!-- Timestamp -->
+  <div class="message-timestamp">
+    {{ formatTimestamp(message.timestamp) }}
+  </div>
+</div>
